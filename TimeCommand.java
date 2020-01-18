@@ -6,51 +6,56 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-
+//import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 
-public class DriveCommand extends CommandBase {
+public class TimeCommand extends CommandBase {
   /**
-   * Creates a new DriveCommand.
+   * Creates a new TimeCommand.
    */
-  double variableTime;
   double variableSpeed;
-  public DriveCommand() {
-    // variableTime = time;
-    // variableSpeed = speed;
+  double variableTime;
+  private final Timer localTimer = new Timer();
+
+
+  public TimeCommand(double time, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
+    variableTime = time;
+    variableSpeed = speed;
     addRequirements(Robot.objectDrivingSubsystem);
-
-
   }
+    
+
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // Robot.objectDrivingSubsystem.teleopDrive(variableSpeed, variableSpeed);
-    
+    localTimer.start();
+   
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double y_stick1 = - .75 * Robot.objectRobotContainer.gamepad1.getRawAxis(Constants.joystickPort);
-    double y_stick2 = - .75 * Robot.objectRobotContainer.gamepad1.getRawAxis(Constants.joystickPort2);
-    Robot.objectDrivingSubsystem.teleopDrive(y_stick1, y_stick2);
-    
-  
+    Robot.objectDrivingSubsystem.teleopDrive(variableSpeed, variableSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.objectDrivingSubsystem.teleopDrive(0,0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (localTimer.get() > variableTime){
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }
