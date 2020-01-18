@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 //import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.TimeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -22,7 +25,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
  
   public Joystick gamepad1 = new Joystick(Constants.gamepad1Port);
-  //public Joystick stick2 = new Joystick();
+  public Button xbutton = new JoystickButton(gamepad1, Constants.xButtonPort);
  
 
 
@@ -30,8 +33,10 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    xbutton.whenPressed( new TimeCommand(Constants.moveUntilSeconds, Constants.moveWithSpeed));
     // Configure the button bindings
 
+    
     configureButtonBindings();
   }
 
